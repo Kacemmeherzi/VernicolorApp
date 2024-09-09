@@ -17,36 +17,38 @@ class _ProductListPageState extends State<ProductListPage> {
     productService = ProductService(baseUrl: 'http://10.0.2.2:8082/api/products'); // Adjust the URL
     futureProducts = productService.getProducts();
   }
+
   Future<void> _refreshData() async {
     setState(() {
       futureProducts = productService.getProducts(); // Refresh the data
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Product List'),
-        backgroundColor:Colors.red,
+        backgroundColor: Colors.red,
       ),
-      body:RefreshIndicator(
+      body: RefreshIndicator(
         onRefresh: _refreshData, // Callback for refresh
         child: FutureBuilder<List<Product>>(
-        future: futureProducts,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No products found'));
-          } else {
-            List<Product> products = snapshot.data!;
-            return ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return  Card(
+          future: futureProducts,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('No products found'));
+            } else {
+              List<Product> products = snapshot.data!;
+              return ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (context, index) {
+                  final product = products[index];
+                  return Card(
                     elevation: 5,
                     margin: EdgeInsets.all(8),
                     child: Column(
@@ -54,8 +56,7 @@ class _ProductListPageState extends State<ProductListPage> {
                       children: [
                         // Image section
                         Image.network(
-                         // product.imageUrl ?? 
-                         'https://via.placeholder.com/150', // Use a placeholder if no image URL
+                          'https://via.placeholder.com/150', // Placeholder if no image URL
                           fit: BoxFit.cover,
                           height: 150,
                           width: double.infinity,
@@ -71,41 +72,54 @@ class _ProductListPageState extends State<ProductListPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                product.productName,
+                                product.productName ?? 'No Name',
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               SizedBox(height: 4),
-                              Text(product.productDescription),
+                              Text(product.productDescription ?? 'No Description'),
                               SizedBox(height: 8),
-                              Text(
-                                product.productValidatedAt.toString(),
+                              Text(product.productFamily.name ?? 'No product family '),
+                               SizedBox(height: 4),
+                              Text( 'Status: ${product.productStatus ?? 'no status available'}'),
+                              Text( product.productValidatedAt! , 
+                            //    product.productValidatedAt != null ?
+                                    // DateFormat('yyyy-MM-dd').format(DateTime.parse(product.productValidatedAt!))
+                                  // : 'Not validated yet ',
                                 style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                               ),
                             ],
+                          ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Handle edit button press
+                                },
+                                child: Text('Edit'),
+                              ),
+                              SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Handle delete button press
+                                },
+                                child: Text('Delete'),
+                              ),
+                            ],
+                          ),
                         ),
-                        Center(
-                          child: 
-                        OverflowBar(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                // Handle button press
-                              },
-                              child: Text('Edit'),
-                          
-                        ), ElevatedButton(
-                              onPressed: () {
-                                // Handle button press
-                              },
-                              child: Text('delete'),
-                          
-                        )]),
-            )]));}
-            );
-          }
-        },
+                      ],
+                    ),
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
-    ));
+    );
   }
 }
