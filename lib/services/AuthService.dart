@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class AuthService {
 
   final String baseUrl= "http://10.0.2.2:8082/auth" ;
@@ -27,4 +29,22 @@ class AuthService {
       return {'success': false, 'error': response.body};
     }
   }
+  Future<Map<String, String?>> getUser() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  
+  String? username = prefs.getString('username');
+  String? token = prefs.getString('token');
+  
+  return {
+    'username': username,
+    'token': token,
+  };
+}
+Future<void> saveUser(String username, String token) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  
+  // Save user information in shared preferences
+  await prefs.setString('username', username);
+  await prefs.setString('token', token);
+}
 }
