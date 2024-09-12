@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vernicolorapp/models/User.dart';
 
 class AuthService {
 
@@ -40,11 +41,14 @@ class AuthService {
     'token': token,
   };
 }
-Future<void> saveUser(String username, String token) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
+Future<void> saveUser(User user) async {
+   final SharedPreferences prefs = await SharedPreferences.getInstance();
   
-  // Save user information in shared preferences
-  await prefs.setString('username', username);
-  await prefs.setString('token', token);
+  // Convert User object to JSON string
+  String userJson = jsonEncode(user.toJson());
+  
+  // Save JSON string in shared preferences
+  await prefs.setString('user', userJson);
+  print('User saved locally');
 }
 }
