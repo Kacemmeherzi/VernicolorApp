@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vernicolorapp/models/LoginResponse.dart';
 import 'package:vernicolorapp/models/User.dart';
 
 class AuthService {
@@ -23,7 +24,13 @@ class AuthService {
     );
 
     if (response.statusCode == 200) {
+       Map<String, dynamic> json = jsonDecode(response.body);
+      ApiResponse apiResponse = ApiResponse.fromJson(json);
+
+      // Save user locally
+      await saveUser(apiResponse.user);
      return  {'success': true, 'body':  jsonDecode(response.body)};
+     
       
 
     } else {
@@ -53,5 +60,10 @@ Future<void> saveUser(User user) async {
   // Save JSON string in shared preferences
   await prefs.setString('user', userJson);
   print('User saved locally');
+}
+Future<void> clearUser() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('user');
+  print('User data cleared');
 }
 }
