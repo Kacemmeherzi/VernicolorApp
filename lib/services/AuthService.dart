@@ -30,16 +30,19 @@ class AuthService {
       return {'success': false, 'error': response.body};
     }
   }
-  Future<Map<String, String?>> getUser() async {
+  Future<User?> getUser() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   
-  String? username = prefs.getString('username');
-  String? token = prefs.getString('token');
+  // Get the JSON string from shared preferences
+  String? userJson = prefs.getString('user');
   
-  return {
-    'username': username,
-    'token': token,
-  };
+  if (userJson == null) {
+    return null; // No user saved
+  }
+
+  // Convert the JSON string back to a User object
+  Map<String, dynamic> userMap = jsonDecode(userJson);
+  return User.fromJson(userMap);
 }
 Future<void> saveUser(User user) async {
    final SharedPreferences prefs = await SharedPreferences.getInstance();
