@@ -46,18 +46,12 @@ class _CustomerListPageState extends State<CustomerListPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // Image section
-                        Image.network(
-                         // product.imageUrl ?? 
-                         'https://via.placeholder.com/150', // Use a placeholder if no image URL
-                          fit: BoxFit.cover,
-                          height: 150,
-                          width: double.infinity,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Center(
-                              child: Icon(Icons.error, color: Colors.red),
-                            );
-                          },  
-                        ),
+                      Image.asset(
+            'assets/images/customer.png',
+            width: double.infinity,
+            height: 200.0,
+            fit: BoxFit.scaleDown, // Adjust how the image fits within the space
+          ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
