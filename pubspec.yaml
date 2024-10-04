@@ -59,6 +59,11 @@ flutter:
   assets:
     - assets/images/logoverni.png
     - assets/images/placeholder.png
+    - assets/images/customer.png
+    - assets/images/production.png
+
+
+
 
 
   # The following line ensures that the Material Icons font is
