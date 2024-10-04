@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:vernicolorapp/models/ProductIssue.dart';
 
@@ -14,6 +17,44 @@ class _AddIssueFormState extends State<AddProductIssue> {
   final _formKey = GlobalKey<FormState>();
   String issueType = '';
   String issueDescription = '';
+    Future<void> sendIssue() async {
+    final url = Uri.parse('http://10.0.2.2:8082/api/product-issues/create'); // Replace with your API endpoint
+
+    // Create the request body
+    Map<String, dynamic> requestBody = {
+      'productId': widget.productId,
+      'type': issueType,
+      'description': issueDescription,
+    };
+
+    try {
+      // Send the POST request
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json', // Set the content type to JSON
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+         ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Issue sent successfully!'),backgroundColor: Colors.green,),
+      );
+      Navigator.pop(context);
+        // Success
+        print('Issue sent successfully');
+      } else {
+        // Handle error response
+        print('Failed to send issue. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      // Handle any exceptions (e.g., network issues)
+      print('Error occurred while sending issue: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +110,10 @@ class _AddIssueFormState extends State<AddProductIssue> {
               ),
               SizedBox(height: 32),
 
+
               // Submit Button
-              ElevatedButton(
+              ElevatedButton.icon(
+                
                 onPressed: () {
                   // Validate the form
                   if (_formKey.currentState!.validate()) {
@@ -81,21 +124,18 @@ class _AddIssueFormState extends State<AddProductIssue> {
                       description: issueDescription,
                     );
 
-                    // Handle submission logic here (e.g., API call to save the issue)
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Issue added successfully!'),
-                      ),
-                    );
-
-                    // Optionally, navigate back or clear the form after submission
-                    Navigator.pop(context, newIssue);
+                    sendIssue();
                   }
                 },
+               label: Text("Add Product"),
+                icon:  Icon(Icons.add),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
+                 
+                  minimumSize:Size(double.infinity, 10) ,
+                  padding: EdgeInsets.symmetric(vertical: 25), // Button height
+                  textStyle: TextStyle(fontSize: 16),backgroundColor: Colors.green , 
+                  foregroundColor: Colors.black
                 ),
-                child: Text('Submit Issue'),
               ),
             ],
           ),
