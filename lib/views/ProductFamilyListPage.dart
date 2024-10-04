@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:vernicolorapp/models/ProductFamily.dart';
 import 'package:vernicolorapp/services/ProductFamilyService.dart';
+import 'package:vernicolorapp/widgets/ProductFamilyWidget.dart';
 
 class ProductFamilyListPage extends StatefulWidget {
   @override
@@ -45,42 +46,8 @@ class _ProductFamilyListPageState extends State<ProductFamilyListPage> {
             return ListView.builder(
               itemCount: productFamilies.length,
               itemBuilder: (context, index) {
-                final productFamily = productFamilies[index];
-                return Card(
-                  margin: EdgeInsets.all(8.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        // Image holder (optional)
-                        Container(
-                          width: 60,
-                          height: 60,
-                          color: Colors.grey,
-                          child: Icon(Icons.category, color: Colors.white),
-                        ),
-                        SizedBox(width: 16),
-                        // Details
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Family name : ${productFamily.name}',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(productFamily.description),
-                              Text('z',
-                                //'Quantity: ${productFamily.quantity}',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                final prodFamily = productFamilies[index];
+                return ProductFamilyCard(productFamily: prodFamily) ;
               },
             );
           }
