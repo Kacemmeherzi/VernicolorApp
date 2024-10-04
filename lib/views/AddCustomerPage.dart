@@ -90,9 +90,17 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                 },
               ),
               SizedBox(height: 20),
-              ElevatedButton(
+              ElevatedButton.icon(
+                 label: Text("Add Product"),
+                icon:  Icon(Icons.add),
+                style: ElevatedButton.styleFrom(
+                 
+                  minimumSize:Size(double.infinity, 10) ,
+                  padding: EdgeInsets.symmetric(vertical: 25), // Button height
+                  textStyle: TextStyle(fontSize: 16),backgroundColor: Colors.green , 
+                  foregroundColor: Colors.black
+                ),
                 onPressed: _addCustomer,
-                child: Text('Add Customer'),
               ),
             ],
           ),
