@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:vernicolorapp/models/Product.dart';
+import 'package:vernicolorapp/views/AddProductIssue.dart';
+import 'package:vernicolorapp/views/ProductInfoPage.dart';
 
 class ProductWidget extends StatelessWidget {
-  final String? imageUrl;  // Nullable to handle absence of an image
-  final String name;
-  final String description;
-  final List<String> issues;
-
+   final Product product  ;
   const ProductWidget({
+    required this.product ,
     Key? key,
-    this.imageUrl,
-    required this.name,
-    required this.description,
-    required this.issues,
+   
   }) : super(key: key);
+ 
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,32 +25,32 @@ class ProductWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Display Product Image or Placeholder if imageUrl is null or empty
-            imageUrl != null && imageUrl!.isNotEmpty
+            product.imageUrl != null && product.imageUrl!.isNotEmpty
                 ? Image.network(
-                    imageUrl!,
+                    product.imageUrl!,
                     height: 150,
                     width: double.infinity,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.scaleDown,
                     errorBuilder: (context, error, stackTrace) {
                       return Image.asset(
-                        'assets/placeholder.png', // Add your local placeholder image
-                        height: 150,
+                        'assets/images/placeholder.png', // Add your local placeholder image
+                        height: 50,
                         width: double.infinity,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.scaleDown,
                       );
                     },
                   )
                 : Image.asset(
-                    'assets/placeholder.png', // Default placeholder image
-                    height: 150,
+                    'assets/images/placeholder.png', // Default placeholder image
+                    height: 100,
                     width: double.infinity,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.scaleDown,
                   ),
             const SizedBox(height: 10),
 
             // Display Product Name
             Text(
-              name,
+              product.productName,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -60,7 +60,39 @@ class ProductWidget extends StatelessWidget {
 
             // Display Product Description
             Text(
-              description,
+              product.productDescription,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              product.productFamily.name,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              product.productCreatedAt??"",
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.green,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              product.productValidatedAt??"No issues added",
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+            "Issues found  ${product.issues.length.toString()}",
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -70,14 +102,32 @@ class ProductWidget extends StatelessWidget {
 
             // Display Product Status: Good if issues > 0, Bad if issues == 0
             Text(
-              issues.isNotEmpty ? "Good" : "Bad",
+              product.issues.isEmpty ? "Good" : "Bad",
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
-                color: issues.isNotEmpty ? Colors.green : Colors.red,
+                color: product.issues.isEmpty ? Colors.green : Colors.red,
               ),
             ),
+            Column(crossAxisAlignment: CrossAxisAlignment.center, children :[
+               ElevatedButton(  style: ElevatedButton.styleFrom(
+            minimumSize: Size(double.infinity, 40), backgroundColor: Colors.blue,foregroundColor: Colors.black
+          ),
+                onPressed:(){  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ProductInfoPage(product: product),
+    ),
+  );}, child: Text("view product info ")),ElevatedButton(  style: ElevatedButton.styleFrom(
+            minimumSize: Size(double.infinity, 40), backgroundColor: Colors.red,foregroundColor: Colors.black
+          ),
+                onPressed:(){ Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => AddProductIssue(productId: product.id)));}, child: Text("add an issue "))
+            ],)
+           
           ],
+
         ),
       ),
     );
