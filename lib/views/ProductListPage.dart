@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vernicolorapp/models/Product.dart';
 import 'package:vernicolorapp/services/ProductService.dart';
+import 'package:vernicolorapp/widgets/ProductWidget.dart';
 
 class ProductListPage extends StatefulWidget {
   @override
@@ -29,7 +30,7 @@ class _ProductListPageState extends State<ProductListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Product List'),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blue,
       ),
       body: RefreshIndicator(
         onRefresh: _refreshData, // Callback for refresh
@@ -48,72 +49,8 @@ class _ProductListPageState extends State<ProductListPage> {
                 itemCount: products.length,
                 itemBuilder: (context, index) {
                   final product = products[index];
-                  return Card(
-                    elevation: 5,
-                    margin: EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Image section
-                        Image.network(
-                          'https://via.placeholder.com/150', // Placeholder if no image URL
-                          fit: BoxFit.cover,
-                          height: 150,
-                          width: double.infinity,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Center(
-                              child: Icon(Icons.error, color: Colors.red),
-                            );
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                product.productName ?? 'No Name',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                              SizedBox(height: 4),
-                              Text(product.productDescription ?? 'No Description'),
-                              SizedBox(height: 8),
-                              Text(product.productFamily.name ?? 'No product family '),
-                               SizedBox(height: 4),
-                              Text( 'Status: ${product.productStatus ?? 'no status available'}'),
-                              Text( product.productValidatedAt! , 
-                            //    product.productValidatedAt != null ?
-                                    // DateFormat('yyyy-MM-dd').format(DateTime.parse(product.productValidatedAt!))
-                                  // : 'Not validated yet ',
-                                style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Handle edit button press
-                                },
-                                child: Text('Edit'),
-                              ),
-                              SizedBox(width: 8),
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Handle delete button press
-                                },
-                                child: Text('Delete'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                  return ProductWidget(product: product,);
+          
                 },
               );
             }
