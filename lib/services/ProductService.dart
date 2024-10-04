@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:vernicolorapp/models/Product.dart';
+import 'package:vernicolorapp/models/ProductDto.dart';
 
 class ProductService {
   final String baseUrl;
@@ -28,19 +29,33 @@ class ProductService {
     }
   }
 
-  Future<void> createProduct(Product product) async {
+ Future<void> createProduct(ProductDTO productDTO) async {
+  final url = Uri.parse('$baseUrl/create');
+
+  // Prepare the request body using the ProductDTO's toJson() method
+  final body = jsonEncode(productDTO.toJson());
+
+  try {
     final response = await http.post(
-      Uri.parse('$baseUrl/products'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+      url,
+      headers: {
+        "Content-Type": "application/json",
       },
-      body: jsonEncode(product.toJson()),
+      body: body,
     );
 
-    if (response.statusCode != 201) {
-      throw Exception('Failed to create product');
+    if (response.statusCode == 201) {
+      // Successfully created the product
+      print('Product created successfully');
+    } else {
+      // Handle error
+      print('Failed to create product: ${response.body}');
     }
+  } catch (e) {
+    print('Error: $e');
   }
+}
+
 
   Future<void> updateProduct(Product product) async {
     final response = await http.put(
