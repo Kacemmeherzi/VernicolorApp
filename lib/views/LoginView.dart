@@ -38,12 +38,24 @@ class _LoginPageState extends State<Loginview> {
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         setState(() {
+          _isLoading = false ;
           _errorMessage = response['error'];
+            ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+          content: Text(_errorMessage),
+          backgroundColor: Colors.red,
+        ));
         });
       }
     } catch (e) {
       setState(() {
+        _isLoading = false ; 
         _errorMessage = 'An error occurred. Please try again.';
+          ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+          content: Text(_errorMessage),
+          backgroundColor: Colors.red,
+        ));
       });
     } finally {
       setState(() {
@@ -56,15 +68,20 @@ class _LoginPageState extends State<Loginview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
+            SizedBox(height: 50) , 
+            Image.asset(
+              'assets/images/logoverni.png', // Path to your image
+              height: 150,  // Adjust the height as needed
+            ),
             TextField(
               controller: _emailController,
-              decoration:  const InputDecoration(labelText: 'Email'),
+              decoration:  const InputDecoration(labelText: 'username'),
             ),
             TextField(
               controller: _passwordController,
@@ -75,10 +92,16 @@ class _LoginPageState extends State<Loginview> {
             if (_isLoading)
               CircularProgressIndicator()
             else
-              ElevatedButton(
+            SizedBox(width: double.infinity,
+            child: ElevatedButton(
+               style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white, 
+              backgroundColor: Colors.green, 
+  ),
                 onPressed: _login,
-                child: Text('Login'),
-              ),
+                child:  const Text('Login'),
+              ),),
+             
             if (_errorMessage.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 20),
