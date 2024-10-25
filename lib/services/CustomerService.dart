@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:vernicolorapp/config/config.dart';
 import 'package:vernicolorapp/models/Customer.dart';
 
 class CustomerService {
-  final String baseUrl;
+  final String baseUrl= "${Config.apiUrlDev}/api/customers" ; 
 
-  CustomerService({required this.baseUrl});
 
   Future<List<Customer>> getCustomers() async {
     final response = await http.get(Uri.parse('$baseUrl/all'));

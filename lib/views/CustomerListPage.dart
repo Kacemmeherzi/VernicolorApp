@@ -14,11 +14,11 @@ class _CustomerListPageState extends State<CustomerListPage> {
   @override
   void initState() {
     super.initState();
-    customerService = CustomerService(baseUrl: 'http://10.0.2.2:8082/api/customers'); // Adjust URL
+    customerService = CustomerService(); // Adjust URL
     customers = customerService.getCustomers();
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -36,60 +36,64 @@ class _CustomerListPageState extends State<CustomerListPage> {
           } else {
             List<Customer> customers = snapshot.data!;
             return ListView.builder(
-              itemCount: customers.length,
-              itemBuilder: (context, index) {
-                final customer = customers[index];
-                return Card(
-                    elevation: 5,
-                    margin: EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Image section
-                      Image.asset(
-            'assets/images/customer.png',
-            width: double.infinity,
-            height: 200.0,
-            fit: BoxFit.scaleDown, // Adjust how the image fits within the space
-          ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(customer.customerName,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                              SizedBox(height: 4),
-                              Text(customer.customerEmail),
-                              SizedBox(height: 8),
-                              Text(
-                                customer.customerSerialNumber,
-                                style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                        ),
-                        ),
-                        Center(
-                          child: 
-                        OverflowBar(
+                itemCount: customers.length,
+                itemBuilder: (context, index) {
+                  final customer = customers[index];
+                  return Card(
+                      elevation: 5,
+                      margin: EdgeInsets.all(8),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                // Handle button press
-                              },
-                              child: Text('Edit'),
-                          
-                        ), ElevatedButton(
-                              onPressed: () {
-                                // Handle button press
-                              },
-                              child: Text('delete'),
-                          
-                        )]),
-            )]));}
-              
-            );
+                            // Image section
+                            Image.asset(
+                              'assets/images/customer.png',
+                              width: double.infinity,
+                              height: 200.0,
+                              fit: BoxFit
+                                  .scaleDown, // Adjust how the image fits within the space
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    customer.customerName,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(customer.customerEmail),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    customer.customerSerialNumber,
+                                    style: TextStyle(
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Center(
+                              child: OverflowBar(children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Handle button press
+                                  },
+                                  child: Text('Edit'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Handle button press
+                                  },
+                                  child: Text('delete'),
+                                )
+                              ]),
+                            )
+                          ]));
+                });
           }
         },
       ),

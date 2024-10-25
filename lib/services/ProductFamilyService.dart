@@ -1,13 +1,13 @@
 // product_family_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:vernicolorapp/config/config.dart';
 import 'package:vernicolorapp/models/ProductFamily.dart';
 import 'package:vernicolorapp/models/ProductFamilyDto.dart';
 
 class ProductFamilyService {
-  final String baseUrl;
+  final String baseUrl= "${Config.apiUrlDev}/prodfamily";
 
-  ProductFamilyService({required this.baseUrl});
 
   Future<List<ProductFamily>> getProductFamilies() async {
     final response = await http.get(Uri.parse('$baseUrl/all'));

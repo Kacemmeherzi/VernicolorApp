@@ -23,7 +23,7 @@ class _CustomerDropdownState extends State<CustomerDropdown> {
 
   Future<void> _fetchCustomers() async {
     try {
-      final customerService = CustomerService(baseUrl: 'http://10.0.2.2:8082/api/customers'); // Adjust URL
+      final customerService = CustomerService();
       final customers = await customerService.getCustomers();
       setState(() {
         _customers = customers;

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:vernicolorapp/config/config.dart';
 import 'package:vernicolorapp/models/Product.dart';
 import 'package:vernicolorapp/models/ProductDto.dart';
 
 class ProductService {
-  final String baseUrl;
+  final String baseUrl= "${Config.apiUrlDev}/api/products";
 
-  ProductService({required this.baseUrl});
 
   Future<List<Product>> getProducts() async {
     final response = await http.get(Uri.parse('$baseUrl/all'));
@@ -48,7 +48,6 @@ class ProductService {
       // Successfully created the product
       print('Product created successfully');
     } else {
-      // Handle error
       print('Failed to create product: ${response.body}');
     }
   } catch (e) {

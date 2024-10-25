@@ -15,13 +15,13 @@ class _ProductListPageState extends State<ProductListPage> {
   @override
   void initState() {
     super.initState();
-    productService = ProductService(baseUrl: 'http://10.0.2.2:8082/api/products'); // Adjust the URL
+    productService = ProductService();
     futureProducts = productService.getProducts();
   }
 
   Future<void> _refreshData() async {
     setState(() {
-      futureProducts = productService.getProducts(); // Refresh the data
+      futureProducts = productService.getProducts();
     });
   }
 
@@ -49,8 +49,9 @@ class _ProductListPageState extends State<ProductListPage> {
                 itemCount: products.length,
                 itemBuilder: (context, index) {
                   final product = products[index];
-                  return ProductWidget(product: product,);
-          
+                  return ProductWidget(
+                    product: product,
+                  );
                 },
               );
             }

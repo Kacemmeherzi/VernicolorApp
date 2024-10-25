@@ -18,7 +18,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
   @override
   void initState() {
     super.initState();
-    _customerService = CustomerService(baseUrl: 'http://10.0.2.2:8082/api/customers'); // Adjust URL
+    _customerService = CustomerService(); // Adjust URL
   }
 
   Future<void> _addCustomer() async {

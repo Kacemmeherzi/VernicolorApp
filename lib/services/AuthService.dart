@@ -2,12 +2,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vernicolorapp/config/config.dart';
 import 'package:vernicolorapp/models/LoginResponse.dart';
 import 'package:vernicolorapp/models/User.dart';
 
 class AuthService {
 
-  final String baseUrl= "http://10.0.2.2:8082/auth" ;
+  final String baseUrl= Config.apiUrlDev ;
 
 
   Future<Map<String, dynamic>> login({required String email, required String password}) async {

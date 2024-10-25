@@ -16,7 +16,7 @@ class _ProductFamilyListPageState extends State<ProductFamilyListPage> {
   @override
   void initState() {
     super.initState();
-    productFamilyService = ProductFamilyService(baseUrl: 'http://10.0.2.2:8082/prodfamily'); // Adjust URL
+    productFamilyService = ProductFamilyService(); 
     productFamilies = productFamilyService.getProductFamilies();
   }
    Future<void> _refreshData() async {

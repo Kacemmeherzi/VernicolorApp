@@ -6,7 +6,6 @@ import 'package:vernicolorapp/services/CustomerService.dart';
 import 'package:vernicolorapp/services/ProductFamilyService.dart';
 import 'package:vernicolorapp/views/CustomerDropDown.dart';
 
-
 class AddProductFamilyPage extends StatefulWidget {
   @override
   _AddProductFamilyPageState createState() => _AddProductFamilyPageState();
@@ -26,12 +25,13 @@ class _AddProductFamilyPageState extends State<AddProductFamilyPage> {
   @override
   void initState() {
     super.initState();
-    _productFamilyService = ProductFamilyService(baseUrl: 'http://10.0.2.2:8082/prodfamily'); 
+    _productFamilyService = ProductFamilyService();
     _fetchCustomers();
   }
+
   Future<void> _fetchCustomers() async {
     try {
-      final customerService = CustomerService(baseUrl: 'http://10.0.2.2:8082/api/customers'); // Adjust URL
+      final customerService = CustomerService(); // Adjust URL
       final customers = await customerService.getCustomers();
       setState(() {
         _customers = customers;
@@ -52,20 +52,23 @@ class _AddProductFamilyPageState extends State<AddProductFamilyPage> {
   Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
       final productFamilyDTO = ProductFamilyDTO(
-          name: _nameController.text,
-          description: _descriptionController.text,
-          quantity: _quantityController.text.isEmpty ? null : _quantityController.text,
-          customerId: _selectedCustomer!.id,
-        );
+        name: _nameController.text,
+        description: _descriptionController.text,
+        quantity:
+            _quantityController.text.isEmpty ? null : _quantityController.text,
+        customerId: _selectedCustomer!.id,
+      );
 
-        
-      
       try {
         await _productFamilyService.createProductFamily(productFamilyDTO);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Product Family added successfully'),backgroundColor: Colors.green,));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Product Family added successfully'),
+          backgroundColor: Colors.green,
+        ));
         Navigator.pop(context);
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to add Product Family')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to add Product Family')));
       }
     }
   }
@@ -87,12 +90,15 @@ class _AddProductFamilyPageState extends State<AddProductFamilyPage> {
                   TextFormField(
                     controller: _nameController,
                     decoration: InputDecoration(labelText: 'Name'),
-                    validator: (value) => value?.isEmpty ?? true ? 'Please enter a name' : null,
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'Please enter a name' : null,
                   ),
                   TextFormField(
                     controller: _descriptionController,
                     decoration: InputDecoration(labelText: 'Description'),
-                    validator: (value) => value?.isEmpty ?? true ? 'Please enter a description' : null,
+                    validator: (value) => value?.isEmpty ?? true
+                        ? 'Please enter a description'
+                        : null,
                   ),
                   TextFormField(
                     controller: _quantityController,
@@ -100,38 +106,38 @@ class _AddProductFamilyPageState extends State<AddProductFamilyPage> {
                     keyboardType: TextInputType.number,
                   ),
                   SizedBox(height: 20),
-                   DropdownButtonFormField<Customer>(
-                      value: _selectedCustomer,
-                      hint: Text('Select a customer'),
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selectedCustomer = newValue!;
-                        });
-                      },
-                      items: _customers.map((customer) {
-                        return DropdownMenuItem<Customer>(
-                          value: customer,
-                          child: Text(customer.customerName),
-                        );
-                      }).toList(),
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select a customer';
-                        }
-                        return null;
-                      },
-                    ),
+                  DropdownButtonFormField<Customer>(
+                    value: _selectedCustomer,
+                    hint: Text('Select a customer'),
+                    onChanged: (newValue) {
+                      setState(() {
+                        _selectedCustomer = newValue!;
+                      });
+                    },
+                    items: _customers.map((customer) {
+                      return DropdownMenuItem<Customer>(
+                        value: customer,
+                        child: Text(customer.customerName),
+                      );
+                    }).toList(),
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select a customer';
+                      }
+                      return null;
+                    },
+                  ),
                   SizedBox(height: 20),
                   ElevatedButton.icon(
-                     label: Text("Add Product Family"),
-                icon:  Icon(Icons.add),
-                style: ElevatedButton.styleFrom(
-                 
-                  minimumSize:Size(double.infinity, 10) ,
-                  padding: EdgeInsets.symmetric(vertical: 25), // Button height
-                  textStyle: TextStyle(fontSize: 16),backgroundColor: Colors.green , 
-                  foregroundColor: Colors.black
-                ),
+                    label: Text("Add Product Family"),
+                    icon: Icon(Icons.add),
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 10),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 25), // Button height
+                        textStyle: TextStyle(fontSize: 16),
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.black),
                     onPressed: _submit,
                   ),
                 ],

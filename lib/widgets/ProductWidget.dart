@@ -4,15 +4,11 @@ import 'package:vernicolorapp/views/AddProductIssue.dart';
 import 'package:vernicolorapp/views/ProductInfoPage.dart';
 
 class ProductWidget extends StatelessWidget {
-   final Product product  ;
+  final Product product;
   const ProductWidget({
-    required this.product ,
+    required this.product,
     Key? key,
-   
   }) : super(key: key);
- 
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +72,7 @@ class ProductWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              product.productCreatedAt??"",
+              product.productCreatedAt ?? "",
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.green,
@@ -84,7 +80,7 @@ class ProductWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              product.productValidatedAt??"No issues added",
+              product.productValidatedAt ?? "No issues added",
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -92,7 +88,7 @@ class ProductWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-            "Issues found  ${product.issues.length.toString()}",
+              "Issues found  ${product.issues.length.toString()}",
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -109,25 +105,40 @@ class ProductWidget extends StatelessWidget {
                 color: product.issues.isEmpty ? Colors.green : Colors.red,
               ),
             ),
-            Column(crossAxisAlignment: CrossAxisAlignment.center, children :[
-               ElevatedButton(  style: ElevatedButton.styleFrom(
-            minimumSize: Size(double.infinity, 40), backgroundColor: Colors.blue,foregroundColor: Colors.black
-          ),
-                onPressed:(){  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ProductInfoPage(product: product),
-    ),
-  );}, child: Text("view product info ")),ElevatedButton(  style: ElevatedButton.styleFrom(
-            minimumSize: Size(double.infinity, 40), backgroundColor: Colors.red,foregroundColor: Colors.black
-          ),
-                onPressed:(){ Navigator.push(
-  context,
-  MaterialPageRoute(builder: (context) => AddProductIssue(productId: product.id)));}, child: Text("add an issue "))
-            ],)
-           
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 40),
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.black),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ProductInfoPage(product: product),
+                        ),
+                      );
+                    },
+                    child: Text("view product info ")),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 40),
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.black),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  AddProductIssue(productId: product.id)));
+                    },
+                    child: Text("add an issue "))
+              ],
+            )
           ],
-
         ),
       ),
     );
